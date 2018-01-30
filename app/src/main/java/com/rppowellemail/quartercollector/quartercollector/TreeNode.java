@@ -78,7 +78,15 @@ public class TreeNode {
     }
 
     public boolean isCompleted() {
-        return this.completed;
+        if (hasChildren()) {
+            completed = true;
+            for (TreeNode child: getChildren()) {
+                if (!child.isCompleted()) {
+                    completed = false;
+                }
+            }
+        }
+        return completed;
     }
 
     public void setCompleted(boolean b) {

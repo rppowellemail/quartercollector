@@ -98,11 +98,9 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
 
         handle.setOnClickListener(this.onExpandClickListener);
 
-//        if (!n.hasChildren())
-//            handle.setVisibility(android.view.View.INVISIBLE);
-
         if (!n.hasChildren()) {
             handle.setEnabled(false);
+            handle.setVisibility(View.INVISIBLE);
         }
 
         layout_params = new android.widget.LinearLayout.LayoutParams(
@@ -120,7 +118,6 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
         label.setText(n.getName());
         label.setClickable(true);
         label.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        label.setOnClickListener(this.onExpandClickListener);
         label.setTag(n);
         label.setPadding(0, 0, 20, 0);
         layout_params = new android.widget.LinearLayout.LayoutParams(
@@ -129,6 +126,9 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
         );
         layout_params.width = 0;
         layout_params.weight = 1;
+
+        label.setOnClickListener(this.onExpandClickListener);
+
         layout1.addView(label, layout_params);
 
         completed = new android.widget.CheckBox(parent_view.getContext());

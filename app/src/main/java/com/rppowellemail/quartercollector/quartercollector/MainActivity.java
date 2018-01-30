@@ -20,7 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void init_TreeNodeListView() {
 
-        TreeNodeArray nodes = TreeNodeArray.generateTreeNodes4();
+        //TreeNodeArray nodes = TreeNodeArray.generateTreeNodes4();
+
+        TreeNodeArray nodes = TreeNodeArray.generateStateQuarters();
         TreeNodeArray.logTreeNodeArray(nodes);
 
         treeListArrayAdapter = new TreeListArrayAdapter(this, nodes);
