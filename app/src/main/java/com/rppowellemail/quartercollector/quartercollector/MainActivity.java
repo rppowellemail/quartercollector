@@ -2,9 +2,12 @@ package com.rppowellemail.quartercollector.quartercollector;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
+    private TreeListArrayAdapter treeListArrayAdapter;
+    private ListView treelistview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,19 +19,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init_TreeNodeListView() {
-        TreeNode nodes[];
 
-        nodes = TreeNodeArray.generateListTreeNodes1();
+        TreeNodeArray nodes = TreeNodeArray.generateTreeNodes4();
+        TreeNodeArray.logTreeNodeArray(nodes);
 
-        TreeListArrayAdapter treeListArrayAdapter;
         treeListArrayAdapter = new TreeListArrayAdapter(this, nodes);
-        //treeListArrayAdapter.onExpandClickListener = this;
 
-        ListView treelistview;
         treelistview = new android.widget.ListView(this);
         treelistview.setAdapter(treeListArrayAdapter);
 
         setContentView(treelistview);
-
     }
+
 }

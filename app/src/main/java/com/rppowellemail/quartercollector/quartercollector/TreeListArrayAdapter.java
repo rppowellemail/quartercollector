@@ -1,5 +1,7 @@
 package com.rppowellemail.quartercollector.quartercollector;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -9,15 +11,71 @@ import android.widget.LinearLayout;
 
 public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
 {
-    public TreeNode[] nodes;
-    public android.view.View.OnClickListener onExpandClickListener;
+    private TreeNodeArray nodes;
+    private TreeListExpandClickListener onExpandClickListener;
+    private TreeListCompleteClickListener onCompleteClickListener;
 
-    public TreeListArrayAdapter(android.content.Context ctx, TreeNode[] nodes)
+
+    public class TreeListExpandClickListener implements View.OnClickListener {
+        private Context context;
+
+        public TreeListExpandClickListener (Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View view) {
+            TreeNode n;
+
+            n = (TreeNode)view.getTag();
+            Log.d("onClick", "TreeListExpandClickListener: " + n.toString());
+
+            if (view instanceof android.widget.CheckBox)
+            {
+                n.setExpanded(((android.widget.CheckBox)view).isChecked());
+                clear();
+                addAll(nodes.getVisibleNodes());
+            }
+            else {
+                android.widget.Toast.makeText(context, n.getName(), android.widget.Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public class TreeListCompleteClickListener implements View.OnClickListener {
+        private Context context;
+
+        public TreeListCompleteClickListener (Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View view) {
+            TreeNode n;
+
+            n = (TreeNode)view.getTag();
+            Log.d("onClick", "TreeListCompleteClickListener: " + n.toString());
+
+//            if (view instanceof android.widget.CheckBox)
+//            {
+//                n.setExpanded(((android.widget.CheckBox)view).isChecked());
+//                clear();
+//                addAll(nodes.getVisibleNodes());
+//            }
+//            else {
+//                android.widget.Toast.makeText(context, n.getName(), android.widget.Toast.LENGTH_SHORT).show();
+//            }
+        }
+    }
+
+    public TreeListArrayAdapter(android.content.Context ctx, TreeNodeArray nodes)
     {
         super(ctx, 0);
-
+        onExpandClickListener = new TreeListExpandClickListener(ctx);
+        onCompleteClickListener = new TreeListCompleteClickListener(ctx);
         this.nodes = nodes;
-        this.addAll(TreeNode.getVisibleNodes(this.nodes));
+        //this.addAll(TreeNode.getVisibleNodes(this.nodes));
+        this.addAll(nodes.getVisibleNodes());
     }
 
     @Override
@@ -37,9 +95,15 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
         handle = new android.widget.CheckBox(parent_view.getContext());
         handle.setTag(n);
         handle.setChecked(n.isExpanded());
+
         handle.setOnClickListener(this.onExpandClickListener);
-        if (!n.hasChildren())
-            handle.setVisibility(android.view.View.INVISIBLE);
+
+//        if (!n.hasChildren())
+//            handle.setVisibility(android.view.View.INVISIBLE);
+
+        if (!n.hasChildren()) {
+            handle.setEnabled(false);
+        }
 
         layout_params = new android.widget.LinearLayout.LayoutParams(
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -63,7 +127,7 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        layout_params.width = 0;x
+        layout_params.width = 0;
         layout_params.weight = 1;
         layout1.addView(label, layout_params);
 
@@ -71,8 +135,10 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
         completed.setTag(n);
         completed.setChecked(n.isExpanded());
         completed.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        completed.setOnClickListener(this.onExpandClickListener);
+        completed.setOnClickListener(this.onCompleteClickListener);
         completed.setVisibility(View.VISIBLE);
+        completed.setChecked(n.isCompleted());
+        completed.setEnabled(!n.hasChildren());
 
         layout_params = new android.widget.LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -80,15 +146,16 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
         );
         layout1.addView(completed, layout_params);
 
-        if (true) {
-            if (!n.hasChildren()) {
-                handle.setVisibility(View.INVISIBLE);
-                completed.setVisibility(View.VISIBLE);
-            } else {
-                handle.setVisibility(View.VISIBLE);
-                completed.setVisibility(View.INVISIBLE);
-            }
-        }
+//        if (true) {
+//            if (!n.hasChildren()) {
+//                handle.setVisibility(View.INVISIBLE);
+//                completed.setVisibility(View.VISIBLE);
+//            } else {
+//                handle.setVisibility(View.VISIBLE);
+//                completed.setVisibility(View.INVISIBLE);
+//            }
+//        }
+
         return layout1;
     }
 
