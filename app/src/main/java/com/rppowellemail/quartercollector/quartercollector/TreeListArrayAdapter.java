@@ -56,15 +56,12 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
             n = (TreeNode)view.getTag();
             Log.d("onClick", "TreeListCompleteClickListener: " + n.toString());
 
-//            if (view instanceof android.widget.CheckBox)
-//            {
-//                n.setExpanded(((android.widget.CheckBox)view).isChecked());
-//                clear();
-//                addAll(nodes.getVisibleNodes());
-//            }
-//            else {
-//                android.widget.Toast.makeText(context, n.getName(), android.widget.Toast.LENGTH_SHORT).show();
-//            }
+            if (view instanceof android.widget.CheckBox)
+            {
+                n.setCompleted(((android.widget.CheckBox)view).isChecked());
+                clear();
+                addAll(nodes.getVisibleNodes());
+            }
         }
     }
 
@@ -97,6 +94,8 @@ public class TreeListArrayAdapter extends android.widget.ArrayAdapter<TreeNode>
         handle.setChecked(n.isExpanded());
 
         handle.setOnClickListener(this.onExpandClickListener);
+        handle.setButtonDrawable(R.drawable.expandcheckbox);
+
 
         if (!n.hasChildren()) {
             handle.setEnabled(false);

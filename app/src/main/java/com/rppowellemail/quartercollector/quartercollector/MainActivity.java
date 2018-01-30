@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
+    private TreeNodeArray nodes;
     private TreeListArrayAdapter treeListArrayAdapter;
     private ListView treelistview;
 
@@ -19,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init_TreeNodeListView() {
-
-        //TreeNodeArray nodes = TreeNodeArray.generateTreeNodes4();
 
         TreeNodeArray nodes = TreeNodeArray.generateStateQuarters();
         TreeNodeArray.logTreeNodeArray(nodes);
